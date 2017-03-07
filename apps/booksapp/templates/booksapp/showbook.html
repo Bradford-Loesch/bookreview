@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Show Book</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'booksapp/style.css' %}">
+    </head>
+    <body>
+        <div id="topbar">
+            <h2>Welcome, {{ user.first_name }}</h2>
+            <a href="/logout"><button type="button" name="logout">Log Out</button></a>
+        </div>
+        <div id="maincontent">
+            <h2>{{ book.name }}</h2>
+            <h3>Author: {{ book.Author.name }}</h3>
+            <div id="leftcontent">
+            <h2>Reviews:</h2>
+                {% if reviews %}
+                    <ul>
+                        {% for review in reviews %}
+                            <li>Rating: {{ review.rating }} stars</li>
+                            <li><a href="/users/{{ review.User.id }}">{{ review.User.first_name }}</a> says: {{ review.comment }}</li>
+                            <li>Posted on: {{ review.created_at }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div id="rightcontent">
+                <h3>Add a Review:</h3>
+                <form class="addreview" action="/books/addreview" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="bookid" value="{{ book.id }}">
+                    <textarea name="review" rows="8" cols="40"></textarea>
+                    <label for="rating">Rating:
+                        <select class="rating" name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        stars</label>
+                        <input type="submit" name="submit" value="Add Review">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Show User</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'booksapp/style.css' %}">
+    </head>
+    <body>
+        <div id="topbar">
+            <h2>Welcome, {{ user.first_name }}</h2>
+            <a href="/logout"><button type="button" name="logout">Log Out</button></a>
+        </div>
+        <div id="maincontent">
+            <h3>Name: {{ dispuser.first_name }} {{ dispuser.last_name }}</h3>
+            <h3>Email: {{ dispuser.email }}</h3>
+            <h3>Total reviews: {{ count }}</h3>
+            <h2>User has reviewed the following books:</h2>
+            {% if reviews %}
+                <ul>
+                    {% for review in reviews %}
+                        <a href="/books/{{ review.Book.id }}"><li>{{ review.Book.name }}</li></a>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </body>
+</html>
